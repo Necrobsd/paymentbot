@@ -29,7 +29,11 @@ class Order(models.Model):
     client_name = models.CharField(verbose_name='Имя клиента',
                                    max_length=100)
     address = models.CharField(verbose_name='Адрес доставки',
-                               max_length=254)
+                               max_length=254, default='')
+    phone = models.CharField(verbose_name='Телефон',
+                             max_length=11, default='')
+    email = models.CharField(verbose_name='Email',
+                             max_length=50, default='')
     date = models.DateTimeField(verbose_name='Дата заказа',
                                 auto_now=True)
     total_cost = models.DecimalField(verbose_name='Общая стоимость',
