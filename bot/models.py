@@ -42,7 +42,7 @@ class Order(models.Model):
                                   default=False)
 
     def __str__(self):
-        return f'Заказ №{self.id}'
+        return 'Заказ №{}'.format(self.id)
 
     class Meta:
         verbose_name = 'Заказ'
@@ -60,7 +60,7 @@ class OrderItem(models.Model):
     count = models.PositiveSmallIntegerField(verbose_name='Количество')
 
     def __str__(self):
-        return f'Заказ №{self.order.id}: {self.product.name}'
+        return 'Заказ №{}: {}'.format(self.order.id, self.product.name)
 
     def get_cost(self):
         """
