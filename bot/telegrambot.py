@@ -119,7 +119,7 @@ def add_to_basket(bot, update):
         basket[product.id] = product_counter
         baskets[chat_id] = basket
     keyboard = [
-        [InlineKeyboardButton(f"Добавить еще в корзину ({product_counter}шт)",
+        [InlineKeyboardButton("Добавить еще в корзину ({}шт)".format(product_counter),
                               callback_data=product.id)]
     ]
     bot.edit_message_reply_markup(chat_id=query.message.chat_id,
