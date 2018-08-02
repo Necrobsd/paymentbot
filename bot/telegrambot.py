@@ -56,8 +56,11 @@ def show_menu(bot, update):
             bot.sendPhoto(
                 chat_id,
                 photo=open(product.image.path, 'rb'),
-                caption=f'*{product.name}*\n_{product.description}_\n'
-                        f'Цена: {product.price} руб.',
+                caption='*{name}*\n_{description}_\nЦена: {price} руб.'.format(
+                    name=product.name,
+                    description=product.description,
+                    price=product.price
+                ),
                 parse_mode='Markdown',
                 reply_markup=InlineKeyboardMarkup(keyboard)
             )
@@ -81,10 +84,17 @@ def show_basket(bot, update):
             product = Product.objects.get(id=k)
             item_cost = v * product.price
             total_cost += item_cost
-            text += f'\n{count}. {product.name}\n' \
-                    f'_{product.description}_\n' \
-                    f'Цена: {v} x {product.price} = {item_cost}руб.\n'
-        text += f'\n\n*Итого: {total_cost}руб.*'
+            text += ('\n{count}. {name}\n'
+                     '_{description}_\n'
+                     'Цена: {v} x {price} = {item_cost}руб.\n').format(
+                count=count,
+                name=product.name,
+                description=product.description,
+                price=product.price,
+                v=v,
+                item_cost=item_cost
+            )
+        text += '\n\n*Итого: {total_cost}руб.*'.format(total_cost=total_cost)
         update.message.reply_text(text,
                                   reply_markup=basket_keyboard,
                                   parse_mode='Markdown')
@@ -151,7 +161,7 @@ def start_with_shipping_callback(bot, update):
     price = 1
     # price * 100 so as to include 2 d.p.
     # check https://core.telegram.org/bots/payments#supported-currencies for more details
-    prices = [LabeledPrice(f'{product.name} x {basket.get(product.id)}шт.',
+    prices = [LabeledPrice('{} x {}шт.'.format(product.name, basket.get(product.id)),
                            int(product.price * 100 * basket.get(product.id)))
               for product in products]
 
